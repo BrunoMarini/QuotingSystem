@@ -1,0 +1,76 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+}
+
+.leftSidebar {
+    width: 20%;
+    background-color: #f0f0f0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.content {
+    width: 80%;
+    display: flex;
+}
+
+.content.middle,
+.content.right {
+    flex: 1;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.content.middle {
+    background-color: #ffffff;
+}
+
+.content.right {
+    background-color: #e0e0e0;
+}
+
+.styled-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-width: 400px; /* Set max width for the list */
+    font-family: Arial, sans-serif;
+}
+
+.item-header {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.item-details {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 5px;
+}
+
+.selected {
+    background-color: #c0e6f1;
+    border: 1px solid #5aa2d6;
+}
+
+
+
+
+.styled-list li {
+    background-color: antiquewhite;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    cursor: pointer; /* This makes the cursor a hand when hovering over li */
+}
+
+.styled-list li:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
