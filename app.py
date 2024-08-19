@@ -10,13 +10,9 @@ def index():
 
     # TODO: Delete
     db.add_sample_data()
-    print(db.get_test())
-    # <Name>
-    # Orçamento Atual: R$ XXXX,XX
-    # Criado em: HH:MM DD / MM / YYYY
 
-    return render_template('index.html', services=db.get_open_quotations())
-
+    quotations = db.get_open_quotations_with_customer_and_price()
+    return render_template('index.html', services=quotations)
 
 # AJAX to load quotation for specific user id
 @app.route('/load_quotation', methods=['POST'])

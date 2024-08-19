@@ -99,9 +99,9 @@ class ServiceDatabase:
         return self.cursor.fetchall()
 
     # Test
-    def get_test(self):
+    def get_open_quotations_with_customer_and_price(self):
         self.cursor.execute('''
-            SELECT c.name AS name, COALESCE(SUM(qi.total_price), 0) AS total_price, q.created_at AS created_at
+            SELECT c.name AS name, COALESCE(SUM(qi.total_price), 0) AS total_price, strftime('%H:%M %d/%m/%Y', q.created_at) AS created_at
             FROM
                 Quotation q 
             JOIN

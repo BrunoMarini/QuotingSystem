@@ -11,8 +11,9 @@
          <ul class="styled-list">
             {% for service in services %}
             <li onclick="onQuotationSelected('{{ service.id }}', '{{ service.name }}')">
+                <!--div class="item-header">{{ service.name }}</div-->
                 <div class="item-header">{{ service.name }}</div>
-                <div class="item-details">Orçamento Atual: {{ service.total_price }}</div>
+                <div class="item-details">Orçamento Atual: R$ {{ service.total_price }}</div>
                 <div class="item-details">Criado em: {{ service.created_at }}</div>
             </li>
             {% endfor %}
