@@ -1,60 +1,32 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    display: flex;
     height: 100vh;
 }
 
-.leftSidebar {
-    width: 20%;
-    background-color: #f0f0f0;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-.content {
-    width: 80%;
+/* Div containing List and Center information */
+.body_parent {
     display: flex;
 }
 
-.content.middle,
-.content.right {
-    flex: 1;
+/* Left side bar and list attributes */
+.leftSidebar {
+    width: 20%;
+    height: 100%;
+    background-color: #f0f0f0;
     padding: 20px;
     box-sizing: border-box;
-}
-
-.content.middle {
-    background-color: #ffffff;
-}
-
-.content.right {
-    background-color: #e0e0e0;
+    overflow-y: auto;
 }
 
 .styled-list {
     list-style-type: none;
     padding: 0;
+    padding-bottom: 100px;
     margin: 0;
-    max-width: 400px; /* Set max width for the list */
+    max-width: 400px;
+    max-height: 80%;
     font-family: Arial, sans-serif;
-}
-
-.item-header {
-    font-weight: bold;
-    font-size: 1.2em;
-    color: #333;
-}
-
-.item-details {
-    font-size: 0.9em;
-    color: #666;
-    margin-top: 5px;
-}
-
-.selected {
-    background-color: #c0e6f1;
-    border: 1px solid #5aa2d6;
 }
 
 .styled-list li {
@@ -71,3 +43,82 @@ body {
     transform: translateY(-5px);
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
 }
+
+.item-details {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 5px;
+}
+
+.item-header {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #333;
+}
+
+/* Center */
+.content {
+    padding: 20px;
+    width: 80%;
+    height: 100%;
+    display: block;
+    background-color: #94bcdd1e;
+}
+
+.customer_name_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    padding: 20px;
+}
+
+/* Ensures "Cliente:" stays on the left */
+.customer_name_header h2 {
+    margin: 0;
+    padding: 0;
+}
+
+/* Centers the client name within the container */
+.customer_name_header h1 {
+    position: absolute;
+    left: 80%;
+    transform: translateX(-50%);
+    margin: 0;
+    width: 100%;
+}
+
+/* Services table */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 18px;
+    text-align: left;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.table thead {
+    color: #000000;
+    text-align: left;
+    font-weight: bold;
+    width: 100%;
+}
+
+.table th, .table td {
+    padding: 12px 15px;
+    text-align: center;
+}
+
+th {
+    background-color: #36304a;
+    font-family: Montserrat-Medium;
+    font-size: 25px;
+    color: #fff;
+}
+
+tr:nth-of-type(odd) {
+    background-color:#36304a3b;
+}
+

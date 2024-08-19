@@ -124,9 +124,9 @@ class ServiceDatabase:
         return self.cursor.fetchall()
 
     #
-    def get_service_name(self, service_id):
-        self.cursor.execute(f'SELECT name from Service WHERE id = {service_id}')
-        return self.cursor.fetchone()['name']
+    def get_service_for_id(self, service_id):
+        self.cursor.execute(f'SELECT * from Service WHERE id = {service_id}')
+        return self.cursor.fetchone()
 
 
     # TODO: Add sample data, DELETE
@@ -141,6 +141,10 @@ class ServiceDatabase:
         self.create_customer('Alice Smith', 'alice@example.com', '555-1234', '123 Elm Street')
         self.create_customer('Bob Johnson', 'bob@example.com', '555-5678', '456 Oak Avenue')
         self.create_customer('Carol Williams', 'carol@example.com', '555-8765', '789 Pine Road')
+        self.create_customer('Caro4l Williams', 'carol@example.com', '555-8765', '789 Pine Road')
+        self.create_customer('Car3ol Williams', 'carol@example.com', '555-8765', '789 Pine Road')
+        self.create_customer('Ca2rol Williams', 'carol@example.com', '555-8765', '789 Pine Road')
+        self.create_customer('C1arol Williams', 'carol@example.com', '555-8765', '789 Pine Road')
 
         # Retrieve customer IDs
         self.cursor.execute('SELECT id FROM Customer')

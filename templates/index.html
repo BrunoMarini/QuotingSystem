@@ -6,26 +6,42 @@
     <script src="../static/script.js"></script>
 </head>
 <body>
-      <div class="leftSidebar">
-         <h2 style="text-align: center">Serviços Abertos</h2>
-         <ul class="styled-list">
-            {% for service in services %}
-            <li onclick="onQuotationSelected('{{ service.id }}', '{{ service.name }}')">
-                <!--div class="item-header">{{ service.name }}</div-->
-                <div class="item-header">{{ service.name }}</div>
-                <div class="item-details">Orçamento Atual: R$ {{ service.total_price }}</div>
-                <div class="item-details">Criado em: {{ service.created_at }}</div>
-            </li>
-            {% endfor %}
-        </ul>
-        
-      </div>
-      <div class="content">
-         <div class="middle">
-            <!-- Conteúdo do meio -->
+    <head>
+
+    </head>
+    <div class="body_parent">
+        <div class="leftSidebar">
+            <h2 style="text-align: center">Serviços Abertos</h2>
+            <ul class="styled-list">
+                {% for service in services %}
+                <li onclick="onQuotationSelected('{{ service.id }}', '{{ service.name }}')">
+                    <div class="item-header">{{ service.name }}</div>
+                    <div class="item-details">Orçamento Atual: R$ {{ service.total_price }}</div>
+                    <div class="item-details">Criado em: {{ service.created_at }}</div>
+                </li>
+                {% endfor %}
+            </ul>
         </div>
-        <div class="right">
-            <!-- Conteúdo da direita -->
+        <div class="content">
+            <div class="customer_name_header">
+                <h2>Cliente:</h2>
+                <h1 id="client_name"></h1>
+            </div>
+            <hr class="solid">
+            <h2>Serviços:</h2>
+            <table id="services_table" class="table">
+                <thead>
+                    <tr class="row100 head">
+                        <th class="column100 column2" data-column="column2">Serviço</th>
+                        <th class="column100 column3" data-column="column3">Quantidade</th>
+                        <th class="column100 column4" data-column="column4">Valor Unitário</th>
+                        <th class="column100 column5" data-column="column5">Valor Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Add rows dynamically or statically here -->
+                </tbody>
+            </table>
         </div>
     </div>
 </body>
