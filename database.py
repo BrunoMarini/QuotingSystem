@@ -75,7 +75,7 @@ class ServiceDatabase:
 
     # Add Item to Quotation
     def add_item(self, quotation_id, service_id, quantity):
-        self.cursor.execute('SELECT price FROM Service WHERE id = ?', (service_id,))
+        self.cursor.execute(f'SELECT price FROM Service WHERE id = {service_id}')
         result = self.cursor.fetchone()
 
         if result:
@@ -98,10 +98,14 @@ class ServiceDatabase:
         self.cursor.execute('SELECT * FROM Quotation WHERE status = "open"')
         return self.cursor.fetchall()
 
-    # Test
+    # Returns
+    # id - Quotation ID
+    # name - Customer Name
+    # total_price - Quotation Total Price
+    # created_at - Date when quotation was created
     def get_open_quotations_with_customer_and_price(self):
         self.cursor.execute('''
-            SELECT c.name AS name, COALESCE(SUM(qi.total_price), 0) AS total_price, strftime('%H:%M %d/%m/%Y', q.created_at) AS created_at
+            SELECT q.id as id, c.name AS name, COALESCE(SUM(qi.total_price), 0) AS total_price, strftime('%H:%M %d/%m/%Y', q.created_at) AS created_at
             FROM
                 Quotation q 
             JOIN
@@ -114,7 +118,15 @@ class ServiceDatabase:
                 c.name, q.created_at''')
         return self.cursor.fetchall()
 
+    #
+    def get_all_items_for_quotation(self, quotation_id):
+        self.cursor.execute(f'SELECT * FROM QuotationItem WHERE quotation_id = {quotation_id}')
+        return self.cursor.fetchall()
 
+    #
+    def get_service_name(self, service_id):
+        self.cursor.execute(f'SELECT name from Service WHERE id = {service_id}')
+        return self.cursor.fetchone()['name']
 
 
     # TODO: Add sample data, DELETE

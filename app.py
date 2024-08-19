@@ -19,16 +19,18 @@ def index():
 def handle_click():
     # Retrieve JSON data from the request
     data = request.get_json()
-    
-    # Process the data (e.g., save to database, perform calculations, etc.)
     service_id = data.get('id')
-    service_name = data.get('name')
-    
-    # Create a response message
-    response_message = f"Received service ID: {service_id} with name: {service_name}"
-    
-    # Return a JSON response
-    return jsonify({'message': response_message})
+
+    quotation_items = db.get_all_items_for_quotation(service_id)
+
+    current_quotation = []
+    for item in quotation_items:
+        i = {}
+        i['service'] = db.get_service_name(item['service_id'])
+        i['quantity'] = item['quantity']
+        i['total_price'] = item['total_price']
+        current_quotation.append(i)
+    return jsonify(current_quotation)
 
 if __name__ == '__main__':
     app.run(debug=True)
