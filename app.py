@@ -17,27 +17,41 @@ def index():
 # AJAX to load quotation for specific user id
 @app.route('/load_quotation', methods=['POST'])
 def handle_click():
-    # Retrieve JSON data from the request
     data = request.get_json()
 
-    quotation_items = db.get_all_items_for_quotation(data.get('id'))
+    quotation_items = db.get_all_items_for_quotation(data['id'])
 
     result = {}
-    result['name'] = data.get('name')
+    result['name'] = data['name']
 
     current_quotation = []
     for item in quotation_items:
         i = {}
         service = db.get_service_for_id(item['service_id'])
-        print(service)
         i['service'] = service['name']
         i['service_price'] = service['price']
+        i['item_id'] = item['id']
         i['quantity'] = item['quantity']
         i['total_price'] = item['total_price']
         current_quotation.append(i)
 
     result['items'] = current_quotation
     return jsonify(result)
+
+@app.route('/delete_quotation_item', methods=['POST'])
+def handle_delete_quotation_item():
+    data = request.get_json()
+
+    response = {}
+    if (db.delete_quotation_item(data['id']) > 0):
+        response['status'] = 'Ok'
+    else:
+        response['status'] = 'Error'
+
+    return jsonify(response)
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

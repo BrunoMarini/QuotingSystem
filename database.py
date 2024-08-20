@@ -128,6 +128,16 @@ class ServiceDatabase:
         self.cursor.execute(f'SELECT * from Service WHERE id = {service_id}')
         return self.cursor.fetchone()
 
+    #
+    def delete_quotation_item(self, quotation_item_id):
+        row_count = self.cursor.execute(f'DELETE FROM QuotationItem WHERE id = {quotation_item_id}').rowcount
+        self.connection.commit()
+        return row_count
+
+
+
+
+
 
     # TODO: Add sample data, DELETE
     def add_sample_data(self):

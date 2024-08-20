@@ -36,7 +36,7 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    cursor: pointer; /* This makes the cursor a hand when hovering over li */
+    cursor: pointer;
 }
 
 .styled-list li:hover {
@@ -122,3 +122,12 @@ tr:nth-of-type(odd) {
     background-color:#36304a3b;
 }
 
+tr:hover {
+    cursor: pointer;
+    background-color: lightyellow;
+}
+
+.table_image {
+    max-width: 18px;
+    max-height: 18px;
+}
