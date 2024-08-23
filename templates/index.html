@@ -57,7 +57,7 @@
                         </tr>
                         <tr>
                             <td><select id="selected_service" class="select_service_drop_down" onchange="updatePopup(event)" required></select></td>
-                            <td><input id="quantity" type="number" min="1" onchange="updatePrice()" value="1" required></td>
+                            <td><input id="quantity" type="number" min="1" oninput="updatePrice()" onchange="updatePrice()" value="1" required></td>
                             <td><p id="unit_price">R$ 00,00</p></td>
                             <td><p id="total_price">R$ 00,00</p></td>
                         </tr>

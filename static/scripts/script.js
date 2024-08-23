@@ -46,6 +46,7 @@ function onQuotationSelected(id, name) {
                     var row = table.insertRow(1);
 
                     row.insertCell(0).innerHTML = element.service;
+                    // TODO: Is it worth to let user increment this quantity directly on table?
                     row.insertCell(1).innerHTML = element.quantity;
                     row.insertCell(2).innerHTML = "R$ " + element.service_price;
                     row.insertCell(3).innerHTML = "R$ " + element.total_price

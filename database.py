@@ -76,19 +76,54 @@ class ServiceDatabase:
     # Add Item to Quotation
     def add_item(self, quotation_id: int, service_id: int, quantity: int) -> bool:
         try:
-            self.cursor.execute(f'SELECT price FROM Service WHERE id = {service_id}')
-            result = self.cursor.fetchone()
-            if result:
-                total_price = result['price'] * quantity
-                self.cursor.execute('''
-                    INSERT INTO QuotationItem (quotation_id, service_id, quantity, total_price)
-                    VALUES (?, ?, ?, ?)''', (quotation_id, service_id, quantity, total_price))
+            service_price = self.get_price_for_service_id(service_id)
+            if service_price <= 0:
+                return -1
+
+            item = self.get_item_for_quotation_and_service_id(quotation_id, service_id)
+            if item:
+                id = item['id']
+                quantity += item['quantity']
+                total_price = service_price * quantity
+                self.cursor.execute(f'UPDATE QuotationItem SET quantity = {quantity}, total_price = {total_price} WHERE id = {id}')
                 self.connection.commit()
-                return total_price
-            return -1
+                return 1
+
+            total_price = quantity * service_price
+            self.cursor.execute('''
+                INSERT INTO QuotationItem (quotation_id, service_id, quantity, total_price)
+                VALUES (?, ?, ?, ?)''', (quotation_id, service_id, quantity, total_price))
+            return 1
         except Exception as e:
             print("Failed to add_item()", e)
             return -1
+
+    #
+    def get_price_for_service_id(self, service_id):
+        try:
+            self.cursor.execute(f'SELECT price FROM service WHERE id = {service_id}')
+            result = self.cursor.fetchone()
+            if result:
+                return result['price']
+            return -1
+        except Exception as e:
+            print(f"Failed to get_price_for_service_id({service_id})", e)
+            return -1
+
+    #
+    def get_item_for_quotation_and_service_id(self, quotation_id, service_id):
+        try:
+            self.cursor.execute('''
+                SELECT * FROM QuotationItem WHERE
+                quotation_id = ? AND
+                service_id = ?''', (quotation_id, service_id))
+            result = self.cursor.fetchone()
+            if result:
+                return result
+            return None
+        except Exception as e:
+            print(f"Failed to get_quotation_item_for_quotation_and_service_id({quotation_id})", e)
+            return None
 
     # Move Quotation to status 'closed'
     def close_quotation(self, quotation_id):
