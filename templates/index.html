@@ -14,7 +14,7 @@
             <h2 style="text-align: center">Serviços Abertos</h2>
             <ul class="styled-list">
                 {% for service in services %}
-                <li onclick="onQuotationSelected('{{ service.id }}', '{{ service.name }}')">
+                <li id='{{ service.id }}' onclick="onQuotationSelected('{{ service.id }}', '{{ service.name }}')">
                     <div class="item-header">{{ service.name }}</div>
                     <div class="item-details">Orçamento Atual: R$ {{ service.total_price }}</div>
                     <div class="item-details">Criado em: {{ service.created_at }}</div>
@@ -30,9 +30,9 @@
             <hr class="solid">
             <div class="service_button">
                 <h2>Serviços:</h2>
-                <button class="button_add_service">Adicionar Serviço</button>
+                <button class="button_add_service" onclick="openForm()">+ Adicionar Serviço</button>
             </div>
-            <table id="services_table" class="table">
+            <table id="services_table" class="table_current_services">
                 <thead>
                     <tr class="row100 head">
                         <th class="column100 column2" data-column="column2">Serviço</th>
@@ -45,6 +45,29 @@
                 <tbody>
                 </tbody>
             </table>
+            <div class="form-popup" id="add_service_form">
+                <form class="form-container" onsubmit="false">
+                    <h1>Adicionar Serviço</h1>
+                    <table class="table_add_service">
+                        <tr>
+                            <th><label for="selected_service"><b>Serviço</b></label></th>
+                            <th><label for="quantity"><b>Quantidade</b></label></th>
+                            <th><label><b>Valor Unitário</b></label></th>
+                            <th><label><b>Valor Total</b></label></th>
+                        </tr>
+                        <tr>
+                            <td><select id="selected_service" class="select_service_drop_down" onchange="updatePopup(event)" required></select></td>
+                            <td><input id="quantity" type="number" min="1" onchange="updatePrice()" value="1" required></td>
+                            <td><p id="unit_price">R$ 00,00</p></td>
+                            <td><p id="total_price">R$ 00,00</p></td>
+                        </tr>
+                    </table>
+                    <div class="button-container">
+                        <button type="button" onclick="addNewService()" class="btn">Adicionar</button>
+                        <button type="button" class="btn cancel" onclick="closeForm()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </body>

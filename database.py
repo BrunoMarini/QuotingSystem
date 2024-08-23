@@ -74,16 +74,21 @@ class ServiceDatabase:
         self.connection.commit()
 
     # Add Item to Quotation
-    def add_item(self, quotation_id, service_id, quantity):
-        self.cursor.execute(f'SELECT price FROM Service WHERE id = {service_id}')
-        result = self.cursor.fetchone()
-
-        if result:
-            total_price = result['price'] * quantity
-            self.cursor.execute('''
-                INSERT INTO QuotationItem (quotation_id, service_id, quantity, total_price)
-                VALUES (?, ?, ?, ?)''', (quotation_id, service_id, quantity, total_price))
-            self.connection.commit()
+    def add_item(self, quotation_id: int, service_id: int, quantity: int) -> bool:
+        try:
+            self.cursor.execute(f'SELECT price FROM Service WHERE id = {service_id}')
+            result = self.cursor.fetchone()
+            if result:
+                total_price = result['price'] * quantity
+                self.cursor.execute('''
+                    INSERT INTO QuotationItem (quotation_id, service_id, quantity, total_price)
+                    VALUES (?, ?, ?, ?)''', (quotation_id, service_id, quantity, total_price))
+                self.connection.commit()
+                return total_price
+            return -1
+        except Exception as e:
+            print("Failed to add_item()", e)
+            return -1
 
     # Move Quotation to status 'closed'
     def close_quotation(self, quotation_id):
@@ -121,6 +126,11 @@ class ServiceDatabase:
     #
     def get_all_items_for_quotation(self, quotation_id):
         self.cursor.execute(f'SELECT * FROM QuotationItem WHERE quotation_id = {quotation_id}')
+        return self.cursor.fetchall()
+
+    #
+    def get_all_services(self):
+        self.cursor.execute('SELECT * from Service')
         return self.cursor.fetchall()
 
     #

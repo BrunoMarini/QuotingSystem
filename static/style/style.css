@@ -11,7 +11,6 @@ body {
 
 /* Left side bar and list attributes */
 .leftSidebar {
-    width: 20%;
     height: 100%;
     background-color: #f0f0f0;
     padding: 20px;
@@ -22,8 +21,9 @@ body {
 .styled-list {
     list-style-type: none;
     padding: 0;
+    min-width: 230px;
     padding-bottom: 100px;
-    margin: 0;
+    margin: 10;
     max-width: 400px;
     max-height: 80%;
     font-family: Arial, sans-serif;
@@ -123,7 +123,7 @@ body {
 }
 
 /* Services table */
-.table {
+.table_current_services {
     width: 100%;
     border-collapse: collapse;
     margin: 25px 0;
@@ -132,30 +132,30 @@ body {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
-.table thead {
+.table_current_services thead {
     color: #000000;
     text-align: left;
     font-weight: bold;
     width: 100%;
 }
 
-.table th, .table td {
+.table_current_services th, .table_current_services td {
     padding: 12px 15px;
     text-align: center;
 }
 
-th {
+.table_current_services th {
     background-color: #36304a;
     font-family: Montserrat-Medium;
     font-size: 25px;
     color: #fff;
 }
 
-tr:nth-of-type(odd) {
+.table_current_services tr:nth-of-type(odd) {
     background-color:#36304a3b;
 }
 
-tr:hover {
+.table_current_services tr:hover {
     cursor: pointer;
     background-color: lightyellow;
 }
@@ -163,4 +163,104 @@ tr:hover {
 .table_image {
     max-width: 18px;
     max-height: 18px;
+}
+
+/* Form popup styling */
+.form-popup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f9f9f9;
+    border: 2px solid #ccc;
+    z-index: 9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: max-content  ;
+    padding: 20px;
+}
+
+.table_add_service th,
+.table_add_service td {
+    text-align: center;
+}
+
+.form-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+td input[type="text"],
+td input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    margin: 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+td p {
+    font-size: 16px;
+    color: #333;
+    margin: 0;
+}
+
+.button-container {
+    text-align: center;
+}
+
+.btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    margin: 5px 0;
+    border: none;
+    cursor: pointer;
+    width: 45%;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+.cancel {
+    background-color: #f44336;
+}
+
+.cancel:hover {
+    background-color: #e53935;
+}
+
+.select_service_drop_down{
+    border:none;
+    padding: 10px 20px;
+    border-radius:5px;
+  }
+
+.select_service_drop_down:focus{
+    outline:none;
 }

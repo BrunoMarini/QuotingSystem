@@ -50,7 +50,29 @@ def handle_delete_quotation_item():
 
     return jsonify(response)
 
+@app.route('/get_services', methods=['GET'])
+def load_services():
+    response = {}
+    services = db.get_all_services()
+    if services:
+        response['status'] = 'Ok'
+        response['services'] = services
+    else:
+        response['status'] = 'Error'
+    return response
 
+@app.route('/add_service_to_quotation', methods=['POST'])
+def add_service_to_quotation():
+    data = request.get_json()
+
+    response = {}
+    result = db.add_item(data['quotation_id'], data['service'], data['quantity'])
+    if result > 0:
+        response['status'] = 'Ok'
+        response['total_price'] = result
+    else:
+        response['status'] = 'Error'
+    return response
 
 
 if __name__ == '__main__':
