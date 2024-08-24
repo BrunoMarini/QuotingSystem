@@ -40,9 +40,6 @@ def handle_click():
 
     quotation_items = db.get_all_items_for_quotation(data['id'])
 
-    result = {}
-    result['name'] = data['name']
-
     current_quotation = []
     for item in quotation_items:
         i = {}
@@ -54,6 +51,7 @@ def handle_click():
         i['total_price'] = item['total_price']
         current_quotation.append(i)
 
+    result = {}
     result['items'] = current_quotation
     return jsonify(result)
 

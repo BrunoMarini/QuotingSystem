@@ -63,57 +63,16 @@ window.onload = function() {
  */
 function onQuotationSelected(id, name) {
     console.log("onQuotationSelected: ID = " + id + ", NAME = " + name);
+    document.getElementById("client_name").innerHTML = name;
 
     // Highlighting selected quotation
     if (SELECTED_QUOTATION > 0) {
         document.getElementById(SELECTED_QUOTATION).style.backgroundColor = "antiquewhite";
     }
     document.getElementById(id).style.backgroundColor = "lightblue";
-
     SELECTED_QUOTATION = id;
 
-    const user_id = {
-        id: id,
-        name: name
-    };
-
-    fetch('/load_items', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user_id)})
-        .then(response => response.json())
-        .then(data => {
-            var table = document.getElementById("services_table")
-
-            while (table.rows.length > 1) {
-                table.deleteRow(1)
-            }
-
-            document.getElementById("client_name").innerHTML = data.name
-
-            if (data.items.length == 0) {
-                // TODO
-            } else {
-                data.items.forEach(element => {
-                    var row = table.insertRow(1);
-
-                    row.insertCell(0).innerHTML = element.service;
-                    // TODO: Is it worth to let user increment this quantity directly on table?
-                    row.insertCell(1).innerHTML = element.quantity;
-                    row.insertCell(2).innerHTML = "R$ " + element.service_price;
-                    row.insertCell(3).innerHTML = "R$ " + element.total_price
-
-                    icon_cell = row.insertCell(4)
-                    icon_cell.innerHTML = "<img src='../static/images/ic_trash.png' class='table_image'>"
-                    icon_cell.addEventListener('click', function() {
-                        deleteTableEntry(element.item_id, row);
-                    });
-                });
-            }
-        }).catch(error => {
-            console.log("Error: " + error);
-            alert("Falha ao comunicar com o servidor");
-        });
+    updateItemsTable();
 }
 
 /**
@@ -241,9 +200,8 @@ function addNewService() {
             console.log(data.status);
             if (data.status == 'Ok') {
                 updateQuotationPrice(data.total_price);
+                updateItemsTable();
                 closeForm();
-                // TODO: Currently it's hard to find the quotation on HTMl and update the
-                // total price, so it'll be goot do refactor and add the elements via JS
                 return;
             } else {
                 alert("Erro interno");
@@ -257,4 +215,46 @@ function updateQuotationPrice(price) {
         quotation = document.getElementById(`price_${SELECTED_QUOTATION}`);
         quotation.textContent = `Orçamento Atual: R$ ${price.toFixed(2)}`
     }
+}
+
+function updateItemsTable() {
+    const user_id = {
+        id: SELECTED_QUOTATION
+    };
+
+    fetch('/load_items', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user_id)})
+        .then(response => response.json())
+        .then(data => {
+            var table = document.getElementById("services_table")
+
+            while (table.rows.length > 1) {
+                table.deleteRow(1)
+            }
+
+            if (data.items.length == 0) {
+                // TODO
+            } else {
+                data.items.forEach(element => {
+                    var row = table.insertRow(1);
+
+                    row.insertCell(0).innerHTML = element.service;
+                    // TODO: Is it worth to let user increment this quantity directly on table?
+                    row.insertCell(1).innerHTML = element.quantity;
+                    row.insertCell(2).innerHTML = "R$ " + element.service_price;
+                    row.insertCell(3).innerHTML = "R$ " + element.total_price
+
+                    icon_cell = row.insertCell(4)
+                    icon_cell.innerHTML = "<img src='../static/images/ic_trash.png' class='table_image'>"
+                    icon_cell.addEventListener('click', function() {
+                        deleteTableEntry(element.item_id, row);
+                    });
+                });
+            }
+        }).catch(error => {
+            console.log("Error: " + error);
+            alert("Falha ao comunicar com o servidor");
+        });
 }
