@@ -157,18 +157,18 @@ function updatePopup(event) {
     const result = SERVICES.some(service => {
         if (service.id == selected_id) {
             CURRENT_PRICE = service.price;
-            updatePrice();
+            updatePopupPrice();
             return true;
         }
     });
 
     if (!result) {
         CURRENT_PRICE = 0;
-        updatePrice();
+        updatePopupPrice();
     }
 }
 
-function updatePrice() {
+function updatePopupPrice() {
     const quantity = document.getElementById("quantity").value;
     document.getElementById("unit_price").textContent = "R$ " + CURRENT_PRICE.toFixed(2);
     document.getElementById("total_price").textContent = "R$ " + (quantity * CURRENT_PRICE).toFixed(2);

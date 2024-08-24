@@ -176,9 +176,9 @@ class ServiceDatabase:
     #
     def delete_quotation_item(self, item_id, quotation_id):
         try:
-            self.cursor.execute(f'DELETE FROM QuotationItem WHERE id = {item_id}')
+            deleted_rows = self.cursor.execute(f'DELETE FROM QuotationItem WHERE id = {item_id}').rowcount
             self.connection.commit()
-            return self.get_quotation_total_price(quotation_id)
+            return deleted_rows
         except Exception as e:
             print("Failed to delete_quotation_item", e)
 

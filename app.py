@@ -63,7 +63,7 @@ def handle_delete_quotation_item():
     total_price = db.delete_quotation_item(data['item_id'], data['quotation_id'])
     if (total_price > 0):
         response['status'] = 'Ok'
-        response['total_price'] = total_price
+        response['total_price'] = db.get_quotation_total_price(data['quotation_id'])
     else:
         response['status'] = 'Error'
 
