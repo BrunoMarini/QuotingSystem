@@ -14,8 +14,27 @@ def index():
     quotations = db.get_open_quotations_with_customer_and_price()
     return render_template('index.html', services=quotations)
 
-# AJAX to load quotation for specific user id
-@app.route('/load_quotation', methods=['POST'])
+# Load all quotations
+# Receive on POST method the required status
+@app.route('/load_quotations', methods=['POST'])
+def load_quotations():
+    data = request.get_json()
+
+    result = {}
+    result['status'] = 'Error'
+
+    if data:
+        if data['status'] == 'open':
+            result['quotations'] = db.get_open_quotations_with_customer_and_price()
+            result['status'] = 'Ok'
+        elif data['status'] == 'closed':
+            # TODO
+            print("TODO")
+
+    return jsonify(result)
+
+# Load item for specific user id
+@app.route('/load_items', methods=['POST'])
 def handle_click():
     data = request.get_json()
 
@@ -43,8 +62,10 @@ def handle_delete_quotation_item():
     data = request.get_json()
 
     response = {}
-    if (db.delete_quotation_item(data['id']) > 0):
+    total_price = db.delete_quotation_item(data['item_id'], data['quotation_id'])
+    if (total_price > 0):
         response['status'] = 'Ok'
+        response['total_price'] = total_price
     else:
         response['status'] = 'Error'
 
@@ -69,7 +90,7 @@ def add_service_to_quotation():
     result = db.add_item(data['quotation_id'], data['service'], data['quantity'])
     if result > 0:
         response['status'] = 'Ok'
-        response['total_price'] = result
+        response['total_price'] = db.get_quotation_total_price(data['quotation_id'])
     else:
         response['status'] = 'Error'
     return response

@@ -3,6 +3,58 @@ var SERVICES = {};
 var CURRENT_PRICE = 0;
 
 /**
+ * Function responsible for loading open quotaitons
+ */
+window.onload = function() {
+    const data = {
+        status: 'open'
+    };
+
+    fetch('/load_quotations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)})
+        .then(response => response.json())
+        .then(data => {
+            if (data.status != 'Ok') {
+                // TODO
+            }
+
+            const serviceList = document.getElementById('serviceList');
+            data.quotations.forEach(service => {
+                console.log(service);
+                const listItem = document.createElement('li');
+                listItem.id = service.id;
+                listItem.onclick = function() {
+                    onQuotationSelected(service.id, service.name);
+                };
+
+                const itemHeader = document.createElement('div');
+                itemHeader.className = 'item-header';
+                itemHeader.textContent = service.name;
+
+                const itemDetailsPrice = document.createElement('div');
+                itemDetailsPrice.id = `price_${service.id}`;
+                itemDetailsPrice.className = 'item-details';
+                itemDetailsPrice.textContent = `Orçamento Atual: R$ ${service.total_price.toFixed(2)}`;
+
+                const itemDetailsCreated = document.createElement('div');
+                itemDetailsCreated.className = 'item-details';
+                itemDetailsCreated.textContent = `Criado em: ${service.created_at}`;
+
+                listItem.appendChild(itemHeader);
+                listItem.appendChild(itemDetailsPrice);
+                listItem.appendChild(itemDetailsCreated);
+
+                serviceList.appendChild(listItem);
+            });
+        }).catch(error => {
+            console.log("Error: " + error);
+            alert("Falha ao comunicar com o servidor");
+        });
+};
+
+/**
  * Function to handle Quotation selection. It will load all QuotationItem
  * for the respective Quotation id
  *
@@ -25,7 +77,7 @@ function onQuotationSelected(id, name) {
         name: name
     };
 
-    fetch('/load_quotation', {
+    fetch('/load_items', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(user_id)})
@@ -73,7 +125,10 @@ function onQuotationSelected(id, name) {
 function deleteTableEntry(item_id, table_row) {
     console.log("deleteTableEntry: " + item_id)
     if (confirm("Você tem certeza que deseja deletar esse Serviço?")) {
-        const quotation_item = { id: item_id };
+        const quotation_item = {
+            item_id: item_id,
+            quotation_id: SELECTED_QUOTATION
+        };
         fetch('/delete_quotation_item', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -83,6 +138,7 @@ function deleteTableEntry(item_id, table_row) {
                 console.log(data.status);
                 if (data.status == 'Ok') {
                     table_row.remove();
+                    updateQuotationPrice(data.total_price);
                 }
             });
     }
@@ -184,6 +240,7 @@ function addNewService() {
         .then(data => {
             console.log(data.status);
             if (data.status == 'Ok') {
+                updateQuotationPrice(data.total_price);
                 closeForm();
                 // TODO: Currently it's hard to find the quotation on HTMl and update the
                 // total price, so it'll be goot do refactor and add the elements via JS
@@ -192,4 +249,12 @@ function addNewService() {
                 alert("Erro interno");
             }
         });
+}
+
+function updateQuotationPrice(price) {
+    console.log(price);
+    if (SELECTED_QUOTATION > 0) {
+        quotation = document.getElementById(`price_${SELECTED_QUOTATION}`);
+        quotation.textContent = `Orçamento Atual: R$ ${price.toFixed(2)}`
+    }
 }

@@ -93,7 +93,7 @@ class ServiceDatabase:
             self.cursor.execute('''
                 INSERT INTO QuotationItem (quotation_id, service_id, quantity, total_price)
                 VALUES (?, ?, ?, ?)''', (quotation_id, service_id, quantity, total_price))
-            return 1
+            return total_price
         except Exception as e:
             print("Failed to add_item()", e)
             return -1
@@ -174,12 +174,22 @@ class ServiceDatabase:
         return self.cursor.fetchone()
 
     #
-    def delete_quotation_item(self, quotation_item_id):
-        row_count = self.cursor.execute(f'DELETE FROM QuotationItem WHERE id = {quotation_item_id}').rowcount
-        self.connection.commit()
-        return row_count
+    def delete_quotation_item(self, item_id, quotation_id):
+        try:
+            self.cursor.execute(f'DELETE FROM QuotationItem WHERE id = {item_id}')
+            self.connection.commit()
+            return self.get_quotation_total_price(quotation_id)
+        except Exception as e:
+            print("Failed to delete_quotation_item", e)
 
-
+    def get_quotation_total_price(self, quotation_id):
+        total_price = 0
+        items = self.get_all_items_for_quotation(quotation_id)
+        for item in items:
+            quantity = item['quantity']
+            service_id = item['service_id']
+            total_price += quantity * self.get_price_for_service_id(service_id)
+        return total_price
 
 
 
